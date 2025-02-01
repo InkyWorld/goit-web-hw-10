@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load extract %}
+{% block load %}
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'quotes/styles.css' %}" />
+{% endblock %}
+{% block base %}
+  <div class="row">
+    <div class="col-md-8">
+      {% for quote in quotes %}
+        <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+          <span class="text" itemprop="text">{{ quote.quote }}</span>
+          <span>
+            by <small class="author" itemprop="author">{{ quote.author|author }}</small>
+            <a href="/author/{{ quote.author }}/">(about)</a>
+          </span>
+          <div class="tags">
+            Tags:<meta class="keywords" itemprop="keywords" />
+            {% for tag in quote.tags %}
+              <a class="tag" href="/tag/{{ tag }}/">{{ tag }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+      <nav aria-label="pagination">
+        <ul class="pagination d-flex justify-content-center">
+          {% if quotes.number != 1 %}
+            <li class="page-item first-page">
+              <a class="page-link" href="{% url 'quotes:main_paginate' 1 %}">first</a>
+            </li>
+          {% endif %}
+          <li class="page-item previous {% if not quotes.has_previous %} disabled {% endif %}">
+            <a class="page-link"
+              href="{% if quotes.has_previous %}{% url 'quotes:main_paginate' quotes.previous_page_number %}{% else %}#{% endif %}">Previous
+            </a>
+          </li>
+          <li class="page-item current active">
+            <a class="page-link" href="#">{{ quotes.number }}</a>
+          </li>
+          <li class="page-item next {% if not quotes.has_next %} disabled {% endif %}">
+            <a class="page-link"
+              href="{% if quotes.has_next %}{% url 'quotes:main_paginate' quotes.next_page_number %}{% else %}#{% endif %}">Next</a>
+          </li>
+          {% if quotes.number != quotes.paginator.num_pages %}
+          <li class="page-item last-page">
+            <a class="page-link" href="{{ quotes.paginator.num_pages }}">last</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-4 tags-box">
+      <h2>Top Ten tags</h2>
+      <span class="tag-item"><a class="tag" style="font-size: 28px" href="/tag/love/">love</a></span>
+    </div>
+  </div>
+{% endblock %}
