@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block base %}
+  <h2>Add New Author</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="InputFullname" class="form-label">fullname</label>
+      {{ form.fullname }}
+      <div id="emailFullname" class="form-text">Input fullname.</div>
+    </div>
+    <div class="mb-3">
+        <label for="InputBornDate" class="form-label">born date</label>
+        {{ form.born_date }}
+        <div id="emailBornDate" class="form-text">Input born date.</div>
+      </div>
+      <div class="mb-3">
+        <label for="InputBornLocation" class="form-label">born location</label>
+        {{ form.born_location }}
+        <div id="emailBornLocation" class="form-text">Input born location.</div>
+      </div>
+      <div class="mb-3">
+        <label for="InputDescription" class="form-label">description</label>
+        {{ form.description }}
+        <div id="emailDescription" class="form-text">Input description.</div>
+      </div>
+    <button type="submit" class="btn btn-primary">Add Author</button>
+  </form>
+  {% if messages %}
+  <div class="messages mt-3">
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+      {{ form.non_field_errors }}
+  </div>
+{% endif %}
+{% endblock %}

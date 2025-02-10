@@ -4,32 +4,39 @@
   <link rel="stylesheet" type="text/css" href="{% static 'quotes/styles.css' %}" />
 {% endblock %}
 {% block base %}
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <span {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</span>
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if form.errors and form.non_field_errors %}
-<div class="alert alert-danger" role="alert">
-    {{form.non_field_errors}}
-</div>
-{% endif %}
   <form method="post">
     {% csrf_token %}
     <div class="mb-3">
       <h2>Login User</h2>
       <label for="InputUsername" class="form-label">username</label>
       {{ form.username }}
-      <span>{{form.errors.username}}</span>
+      <div id="usernameHelp" class="form-text">enter your username</div>
+      <span>{{ form.errors.username }}</span>
     </div>
     <div class="mb-3">
       <label for="InputPassword" class="form-label">Password RKK6VmswqctuVEZ</label>
       {{ form.password }}
-      <span>{{form.errors.username}}</span>
+      <div id="passwordHelp" class="form-text">enter your username</div>
+      <span>{{ form.errors.password }}</span>
     </div>
     <button type="submit" class="btn btn-primary">login</button>
   </form>
+  <div class="mt-5 mb-3">
+    <a href="{% url 'authentication:sign-up' %}" class="btn btn-link">Don't have an account? Sign up here</a>
+  </div>
+
+  {% if messages %}
+    <div class="messages mt-3">
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}
+            alert-danger
+          {% else %}
+            alert-{{ message.tags }}
+          {% endif %}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+  {% endif %}
 {% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block base %}
+  <h2>Add New Quote</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="quote">Quote</label>
+      {{ form.quote }}
+    </div>
+    <div class="mb-3">
+      <label for="author">Author</label>
+      {{ form.author }}
+    </div>
+
+    <div class="mb-3" id="tags-container">
+        <label for="tags">Tags</label>
+        <!-- Начальное поле для ввода тега -->
+        <div class="input-group mb-3" id="tag1">
+          <input type="text" name="tags" class="form-control" placeholder="Enter a tag">
+          <button type="button" class="btn btn-outline-secondary" onclick="removeTag('tag1')">-</button>
+        </div>
+      </div>
+  
+      <!-- Кнопка для добавления нового тега -->
+      <div class="mb-3">
+        <button type="button" class="btn btn-outline-secondary" id="add-tag-btn" onclick="addTag()">+</button>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Add Quote</button>
+    </form>
+  {% if messages %}
+  <div class="messages mt-3">
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+    <script>
+      let tagCount = 1;  // Начинаем с одного поля для тега
+  
+      function addTag() {
+        tagCount++;
+        const tagContainer = document.getElementById('tags-container');
+        
+        const newTag = document.createElement('div');
+        newTag.classList.add('input-group', 'mb-3');
+        newTag.id = 'tag' + tagCount;
+  
+        newTag.innerHTML = `
+          <input type="text" name="tags" class="form-control" placeholder="Enter a tag">
+          <button type="button" class="btn btn-outline-secondary" onclick="removeTag('tag${tagCount}')">-</button>
+        `;
+  
+        tagContainer.appendChild(newTag);
+      }
+  
+      function removeTag(tagId) {
+        const tagElement = document.getElementById(tagId);
+        tagElement.remove();
+      }
+    </script>
+{% endblock %}

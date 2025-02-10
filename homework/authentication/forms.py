@@ -43,7 +43,3 @@ class LoginForm(AuthenticationForm):
         required=True,
         widget=PasswordInput(attrs={'class': 'form-control', "id": "InputPassword"})
     )
-
-    class Meta:
-        model = User
-        fields = ('username', 'password')

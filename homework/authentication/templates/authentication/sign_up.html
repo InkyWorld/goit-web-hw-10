@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block base %}
+  <form action="{% url 'authentication:sign-up' %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3"> 
+      <h2>Sign in User</h2>
+      <label for="InputUsername" class="form-label">Username</label>
+      {{ form.username }}
+      <div id="usernameHelp" class="form-text">Enter your username</div>
+      {% if form.username.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.username.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label for="InputEmail" class="form-label">Email</label>
+      {{ form.email }}
+      <div id="emailHelp" class="form-text">Enter your email</div>
+      {% if form.email.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.email.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label for="InputPassword1" class="form-label">Password</label>
+      {{ form.password1 }}
+      <div id="password1Help" class="form-text">Enter your password</div>
+      {% if form.password1.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.password1.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label for="InputPassword2" class="form-label">Repeat Password</label>
+      {{ form.password2 }}
+      <div id="password2Help" class="form-text">Repeat your password</div>
+      {% if form.password2.errors %}
+        <div class="alert alert-danger">
+          {% for error in form.password2.errors %}
+            <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sign In</button>
+  </form>
+  {% if messages %}
+  <div class="messages mt-3">
+    {% for message in messages %}
+      <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% if form.non_field_errors %}
+  <div class="alert alert-danger" role="alert">
+      {{ form.non_field_errors }}
+  </div>
+{% endif %}
+{% endblock %}

@@ -16,14 +16,20 @@
   <body>
     <div class="container">
       <div class="row header-box">
-        <div class="col-md-8">
+        <div class="col-md-4">
           <h1><a href="{% url 'quotes:main' %}" style="text-decoration: none">Quotes to Scrape</a></h1>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <p class="btn-group">
-            <a href="{% url 'authentication:login' %}" class="btn btn-primary" aria-current="page">login</a>
-            <a href="{% url 'authentication:sign-in' %}" class="btn btn-primary">sign in</a>
-            <a href="{% url 'authentication:logout' %}" class="btn btn-danger">logout</a>
+            {% if user.is_authenticated %}
+              <button class="btn btn-primary btn-block" disabled>{{ user.username }}</button>
+              <a href="{% url 'quotes:add-author' %}" class="btn btn-primary btn-block">add author</a>
+              <a href="{% url 'quotes:add-quote' %}" class="btn btn-primary btn-block">add quote</a>
+              <a href="{% url 'authentication:logout' %}" class="btn btn-danger btn-block">logout</a>
+            {% else %}
+              <a href="{% url 'authentication:login' %}" class="btn btn-primary btn-block">login</a>
+              <a href="{% url 'authentication:sign-up' %}" class="btn btn-primary btn-block">sign up</a>
+            {% endif %}
           </p>
         </div>
       </div>
